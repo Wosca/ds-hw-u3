@@ -18,6 +18,7 @@ export async function SignUp({
       username,
       redirect: false,
     });
+    return true;
   } catch (error: any) {
     return JSON.parse(error.cause.err);
   }

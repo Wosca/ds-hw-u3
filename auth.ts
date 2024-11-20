@@ -33,14 +33,15 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             credentials
           );
           try {
-            if (
-              username === "Wosca" &&
-              email === "Wosca@gmail.com" &&
-              password === "123"
-            ) {
-              return { id: "1", username: "Wosca", email: "Wosca@gmail.com" };
-            }
-            return null;
+            // if (
+            //   username === "Wosca" &&
+            //   email === "Wosca@gmail.com" &&
+            //   password === "123"
+            // ) {
+            //   return { id: "1", username: "Wosca", email: "Wosca@gmail.com" };
+            // }
+
+            return { id: "1", username, email };
           } catch (error) {
             if (error instanceof ZodError) {
               throw error; // Throw the validation error for the client to handle
