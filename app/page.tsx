@@ -7,14 +7,7 @@ import {
   MapPin,
   Smartphone,
   ChevronRight,
-  WavesIcon as Wave,
   Shield,
-  AlertTriangle,
-  LifeBuoy,
-  ExternalLink,
-  Instagram,
-  Twitter,
-  Facebook,
   Download,
 } from "lucide-react";
 import Link from "next/link";
@@ -29,8 +22,10 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useSession } from "next-auth/react";
 
 export default function LandingPage() {
+  const { data: session } = useSession();
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -88,7 +83,11 @@ export default function LandingPage() {
                       variant="outline"
                       className="font-semibold w-full sm:w-auto"
                     >
-                      <Link href="/signup">Create Account</Link>
+                      {!session?.user ? (
+                        <Link href="/signup">Create Account</Link>
+                      ) : (
+                        <Link href="/profile">View your profile</Link>
+                      )}
                     </Button>
                   </motion.div>
                 </div>
@@ -127,71 +126,7 @@ export default function LandingPage() {
         {/* App Demo Section */}
         <section className="py-24 sm:py-32 bg-gradient-to-b from-blue-50 to-background">
           <div className="container mx-auto px-4">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: isVisible ? 1 : 0, x: isVisible ? 0 : -20 }}
-                transition={{ duration: 0.5 }}
-                className="order-2 lg:order-1"
-              >
-                <Badge variant="outline" className="mb-4">
-                  The App
-                </Badge>
-                <h2 className="text-4xl font-bold mb-6">
-                  Shark Protection in Your Pocket
-                </h2>
-                <p className="text-xl text-muted-foreground mb-8">
-                  Our app is super simple to use – just how beach days should
-                  be. No complicated stuff, just the info you need.
-                </p>
-
-                <Tabs defaultValue="iphone" className="mb-8">
-                  <TabsList className="mb-4">
-                    <TabsTrigger value="iphone">iPhone</TabsTrigger>
-                    <TabsTrigger value="android">Android</TabsTrigger>
-                  </TabsList>
-                  <TabsContent value="iphone" className="space-y-4">
-                    <div className="flex items-center space-x-2">
-                      <Shield className="text-green-500 h-5 w-5" />
-                      <p>Works on all iPhones (even your old one)</p>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <Shield className="text-green-500 h-5 w-5" />
-                      <p>Alerts even when your phone's in your pocket</p>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <Shield className="text-green-500 h-5 w-5" />
-                      <p>Works with your Apple Watch too</p>
-                    </div>
-                  </TabsContent>
-                  <TabsContent value="android" className="space-y-4">
-                    <div className="flex items-center space-x-2">
-                      <Shield className="text-green-500 h-5 w-5" />
-                      <p>Works on pretty much any Android phone</p>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <Shield className="text-green-500 h-5 w-5" />
-                      <p>Doesn't drain your battery (we promise!)</p>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <Shield className="text-green-500 h-5 w-5" />
-                      <p>Works with Android watches too</p>
-                    </div>
-                  </TabsContent>
-                </Tabs>
-
-                <div className="flex flex-wrap gap-4">
-                  <Button className="gap-2" size="lg">
-                    <Download className="h-4 w-4" />
-                    Get it on iPhone
-                  </Button>
-                  <Button className="gap-2" size="lg" variant="outline">
-                    <Download className="h-4 w-4" />
-                    Get it on Android
-                  </Button>
-                </div>
-              </motion.div>
-
+            <div className="w-full gap-12 items-center">
               <motion.div
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: isVisible ? 1 : 0, x: isVisible ? 0 : 20 }}
@@ -230,89 +165,6 @@ export default function LandingPage() {
                   </div>
                 </div>
               </motion.div>
-            </div>
-          </div>
-        </section>
-
-        {/* How It Works Section */}
-        <section id="how-it-works" className="py-24 sm:py-32 bg-muted/30">
-          <div className="container mx-auto px-4">
-            <div className="text-center max-w-3xl mx-auto mb-16">
-              <Badge variant="outline" className="mb-4">
-                Easy as 1-2-3
-              </Badge>
-              <h2 className="text-4xl font-bold mb-4">How SharkGuard Works</h2>
-              <p className="text-xl text-muted-foreground">
-                No rocket science here, just a few simple steps
-              </p>
-            </div>
-
-            <div className="max-w-4xl mx-auto relative">
-              {/* Vertical Line */}
-              <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-primary/20 hidden md:block"></div>
-
-              {[
-                {
-                  title: "Download the App",
-                  description:
-                    "Grab SharkGuard from your app store. It's free! Takes like 30 seconds.",
-                  icon: Download,
-                },
-                {
-                  title: "Let Us Know Where You Are",
-                  description:
-                    "Allow location access so we can tell you about sharks near YOU, not ones on the other side of the world.",
-                  icon: MapPin,
-                },
-                {
-                  title: "Set It Up How You Like",
-                  description:
-                    "Choose how you want to be notified. Loud sirens? Gentle nudge? You decide!",
-                  icon: Smartphone,
-                },
-                {
-                  title: "Get Alerts When It Matters",
-                  description:
-                    "We'll buzz you when there's shark activity nearby. Simple as that!",
-                  icon: Bell,
-                },
-                {
-                  title: "Enjoy the Water (Safely!)",
-                  description:
-                    "Now you can swim, surf, or splash around knowing you'll get a heads-up if any toothy friends show up.",
-                  icon: Shield,
-                },
-              ].map((step, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{
-                    opacity: isVisible ? 1 : 0,
-                    y: isVisible ? 0 : 20,
-                  }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="flex flex-col md:flex-row items-start md:items-center gap-4 mb-12 relative"
-                >
-                  <div className="flex-shrink-0 w-16 h-16 rounded-full bg-primary text-primary-foreground flex items-center justify-center z-10 border-4 border-background shadow-lg">
-                    <step.icon className="w-8 h-8" />
-                  </div>
-                  <Card className="flex-grow md:ml-8 border-none shadow-lg">
-                    <CardHeader>
-                      <CardTitle className="flex items-center gap-2">
-                        <span className="bg-primary/10 text-primary w-8 h-8 rounded-full flex items-center justify-center font-bold">
-                          {index + 1}
-                        </span>
-                        {step.title}
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-muted-foreground">
-                        {step.description}
-                      </p>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              ))}
             </div>
           </div>
         </section>

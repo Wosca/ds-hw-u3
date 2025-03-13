@@ -31,7 +31,6 @@ export default function SignIn() {
       password,
     });
     if (response !== true) {
-      console.log(response);
       toast.error("Invalid credentials");
     } else if (response === true) {
       toast.success("Successfully signed in");

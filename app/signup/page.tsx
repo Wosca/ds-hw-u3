@@ -37,7 +37,6 @@ export default function SignUp() {
       surname,
     });
     if (response !== true) {
-      console.log(response[1]);
       toast.error("Sign up failed. Please check your information.");
     } else if (response === true) {
       toast.success("Successfully signed up!");

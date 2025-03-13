@@ -61,7 +61,7 @@ export function CatchesTable({ catches }: { catches: Catch[] }) {
         return <Badge variant="destructive">{risk}</Badge>;
       case "Medium":
         return (
-          <Badge variant="warning" className="bg-amber-500">
+          <Badge variant="destructive" className="bg-amber-500">
             {risk}
           </Badge>
         );

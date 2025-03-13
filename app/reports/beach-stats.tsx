@@ -82,7 +82,9 @@ export function BeachStats({ beachStats }: { beachStats: BeachStat[] }) {
                       </span>
                     </div>
                     <div>
-                      <span className="text-muted-foreground">Percentage:</span>
+                      <span className="text-muted-foreground">
+                        Percentage of total catches:
+                      </span>
                       <span className="ml-2">
                         {(
                           (stat.catchCount /

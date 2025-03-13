@@ -40,7 +40,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           .from(userDetails)
           .where(eq(userDetails.email, email))
           .limit(1);
-        console.log(dbUser);
 
         if (dbUser.length === 0) {
           const user = await db

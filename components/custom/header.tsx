@@ -2,7 +2,7 @@ import { Shield } from "lucide-react";
 import Link from "next/link";
 
 import { auth } from "@/auth";
-import { DropdownMenuComponent, HeaderSignOut } from "./headerClient";
+import { DropdownMenuComponent, HeaderSignOut, Links } from "./headerClient";
 
 export default async function Header() {
   const session = await auth();
@@ -15,30 +15,7 @@ export default async function Header() {
         </Link>
 
         <nav className="hidden md:flex space-x-6">
-          <Link
-            href="#features"
-            className="text-muted-foreground hover:text-foreground transition-colors"
-          >
-            Features
-          </Link>
-          <Link
-            href="#how-it-works"
-            className="text-muted-foreground hover:text-foreground transition-colors"
-          >
-            How It Works
-          </Link>
-          <Link
-            href="#testimonials"
-            className="text-muted-foreground hover:text-foreground transition-colors"
-          >
-            Testimonials
-          </Link>
-          <Link
-            href="#faq"
-            className="text-muted-foreground hover:text-foreground transition-colors"
-          >
-            FAQ
-          </Link>
+          <Links />
         </nav>
 
         <div className="flex items-center space-x-4">

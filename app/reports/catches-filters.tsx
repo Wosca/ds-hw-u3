@@ -20,28 +20,13 @@ import { CalendarIcon, X } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 
-// This would typically come from an API call or server component props
-// For this example, we'll hardcode some sample data
-const BEACHES = [
-  { id: 1, name: "Bondi Beach" },
-  { id: 2, name: "Manly Beach" },
-  { id: 3, name: "Coogee Beach" },
-  { id: 4, name: "Cronulla Beach" },
-];
-
-const SPECIES = [
-  "Great White Shark",
-  "Tiger Shark",
-  "Bull Shark",
-  "Hammerhead Shark",
-  "Mako Shark",
-];
-
 interface CatchFiltersProps {
   currentBeach?: number;
-  currentSpecies?: string;
+  currentSpecies?: number;
   currentDateFrom?: string;
   currentDateTo?: string;
+  SPECIES: { id: number; name: string }[];
+  BEACHES: { id: number; name: string }[];
 }
 
 export function CatchFilters({
@@ -49,12 +34,16 @@ export function CatchFilters({
   currentSpecies,
   currentDateFrom,
   currentDateTo,
+  SPECIES,
+  BEACHES,
 }: CatchFiltersProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
   const [beach, setBeach] = useState<string>(currentBeach?.toString() || "");
-  const [species, setSpecies] = useState<string>(currentSpecies || "");
+  const [species, setSpecies] = useState<string>(
+    currentSpecies?.toString() || ""
+  );
   const [dateFrom, setDateFrom] = useState<Date | undefined>(
     currentDateFrom ? new Date(currentDateFrom) : undefined
   );
@@ -145,8 +134,8 @@ export function CatchFilters({
             <SelectContent>
               <SelectItem value="all">All species</SelectItem>
               {SPECIES.map((species) => (
-                <SelectItem key={species} value={species}>
-                  {species}
+                <SelectItem key={species.id} value={species.id.toString()}>
+                  {species.name}
                 </SelectItem>
               ))}
             </SelectContent>

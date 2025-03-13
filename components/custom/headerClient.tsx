@@ -8,6 +8,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { signIn, signOut } from "next-auth/react";
 import Link from "next/link";
@@ -81,3 +82,19 @@ export const HeaderSignOut = () => {
     </Button>
   );
 };
+
+export function Links() {
+  const pathname = usePathname();
+  return (
+    pathname === "/" && (
+      <>
+        <Link
+          href="/reports"
+          className="text-muted-foreground hover:text-foreground transition-colors"
+        >
+          Reports
+        </Link>
+      </>
+    )
+  );
+}

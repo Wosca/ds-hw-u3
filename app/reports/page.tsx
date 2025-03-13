@@ -45,17 +45,16 @@ const StatsSkeleton = () => (
 );
 
 // Server component to fetch and display catch data
-export default async function ReportsPage({
-  searchParams,
-}: {
-  searchParams: {
+export default async function ReportsPage(props: {
+  searchParams: Promise<{
     page?: string;
     beach?: string;
     species?: string;
     dateFrom?: string;
     dateTo?: string;
-  };
+  }>;
 }) {
+  const searchParams = await props.searchParams;
   const currentPage = Number(searchParams.page) || 1;
   const pageSize = 10;
   const offset = (currentPage - 1) * pageSize;
@@ -64,9 +63,22 @@ export default async function ReportsPage({
   const beachFilter = searchParams.beach
     ? Number.parseInt(searchParams.beach)
     : undefined;
-  const speciesFilter = searchParams.species;
+  const speciesFilter = searchParams.species
+    ? Number.parseInt(searchParams.species)
+    : undefined;
   const dateFromFilter = searchParams.dateFrom;
   const dateToFilter = searchParams.dateTo;
+
+  const beachesData = await db.select().from(beachDetails);
+  const beaches = beachesData.map((beach) => ({
+    id: beach.beachID,
+    name: beach.beach,
+  }));
+  const speciesData = await db.select().from(sharkDetails);
+  const species = speciesData.map((shark) => ({
+    id: shark.sharkID,
+    name: shark.name,
+  }));
 
   return (
     <div className="container mx-auto py-8 space-y-8">
@@ -97,6 +109,8 @@ export default async function ReportsPage({
             currentSpecies={speciesFilter}
             currentDateFrom={dateFromFilter}
             currentDateTo={dateToFilter}
+            BEACHES={beaches}
+            SPECIES={species}
           />
         </CardContent>
       </Card>
@@ -175,7 +189,7 @@ async function CatchesSection({
   pageSize: number;
   offset: number;
   beachId?: number;
-  species?: string;
+  species?: number;
   dateFrom?: string;
   dateTo?: string;
 }) {
@@ -187,7 +201,7 @@ async function CatchesSection({
   }
 
   if (species) {
-    conditions.push(eq(sharkDetails.species, species));
+    conditions.push(eq(sharkDetails.sharkID, species));
   }
 
   if (dateFrom) {
