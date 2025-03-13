@@ -11,7 +11,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -53,7 +52,7 @@ export default function SignIn() {
               Sign into your Account
             </CardTitle>
             <CardDescription className="text-center">
-              Don't have an account?{" "}
+              Don`&apos;`t have an account?{" "}
               <Link
                 href="/signup"
                 className="font-medium text-primary hover:underline transition-colors"

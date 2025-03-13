@@ -36,10 +36,6 @@ export function PaginationControl({
       return Array.from({ length: totalPages }, (_, i) => i + 1);
     }
 
-    // Always include first and last page
-    const firstPage = 1;
-    const lastPage = totalPages;
-
     // For current page near the beginning
     if (currentPage <= 3) {
       return [1, 2, 3, 4, 5, "...", totalPages];

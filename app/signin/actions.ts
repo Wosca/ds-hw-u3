@@ -18,7 +18,7 @@ export async function SignIn1({
     });
     return true;
   } catch (error: any) {
-    console.log(error.cause);
+    console.error(error.cause);
     return error;
   }
 }

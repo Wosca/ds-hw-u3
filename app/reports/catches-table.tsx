@@ -50,6 +50,7 @@ export function CatchesTable({ catches }: { catches: Catch[] }) {
         day: "numeric",
       });
     } catch (e) {
+      console.error(e);
       return dateString; // Fallback to original string if parsing fails
     }
   };

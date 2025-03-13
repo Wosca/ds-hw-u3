@@ -46,6 +46,7 @@ export default function ProfileForm({
         setMessage({ type: "error", text: `Error: ${result.error}` });
       }
     } catch (error) {
+      console.error(error);
       setMessage({
         type: "error",
         text: "An error occurred while updating your profile.",

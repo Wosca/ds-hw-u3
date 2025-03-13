@@ -2,26 +2,12 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import {
-  Bell,
-  MapPin,
-  Smartphone,
-  ChevronRight,
-  Shield,
-  Download,
-} from "lucide-react";
+import { Bell, ChevronRight } from "lucide-react";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+
 import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useSession } from "next-auth/react";
 
 export default function LandingPage() {
@@ -57,7 +43,7 @@ export default function LandingPage() {
                 </h1>
                 <p className="text-xl mb-8 text-muted-foreground">
                   Get real-time shark alerts right on your phone. No more
-                  worrying about what's swimming beneath you!
+                  worrying about what`&apos;`s swimming beneath you!
                 </p>
                 <div className="flex flex-col justify-center sm:flex-row gap-4">
                   <motion.div

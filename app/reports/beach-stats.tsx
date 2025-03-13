@@ -25,8 +25,6 @@ type BeachStat = {
 };
 
 export function BeachStats({ beachStats }: { beachStats: BeachStat[] }) {
-  const [expandedBeach, setExpandedBeach] = useState<string | null>(null);
-
   // Find the maximum catch count for relative scaling
   const maxCatchCount = Math.max(...beachStats.map((stat) => stat.catchCount));
 
