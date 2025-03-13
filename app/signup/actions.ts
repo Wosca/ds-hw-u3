@@ -2,24 +2,28 @@
 
 import { signIn } from "@/auth";
 
-export async function SignUp({
+export async function SignUp1({
   email,
   password,
-  username,
+  firstName,
+  surname,
 }: {
   email: string;
   password: string;
-  username: string;
+  firstName: string;
+  surname: string;
 }) {
   try {
     await signIn("credentials", {
       email,
       password,
-      username,
+      firstName,
+      surname,
       redirect: false,
     });
     return true;
   } catch (error: any) {
-    return JSON.parse(error.cause.err);
+    console.log(error.cause);
+    return error;
   }
 }

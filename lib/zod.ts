@@ -8,8 +8,4 @@ export const signInSchema = object({
     .min(1, "Password is required")
     .min(5, "Password must be more than 5 characters")
     .max(32, "Password must be less than 32 characters"),
-  username: string({ required_error: "Username is required" })
-    .min(1, "Username is required")
-    .max(32, "Username must be less than 32 characters")
-    .min(5, "Username must be more than 5 characters"),
 });
