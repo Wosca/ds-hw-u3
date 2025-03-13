@@ -1,7 +1,5 @@
 import { Shield } from "lucide-react";
 import Link from "next/link";
-import { signIn } from "next-auth/react";
-import { Button } from "@/components/ui/button";
 
 import { auth } from "@/auth";
 import { DropdownMenuComponent, HeaderSignOut } from "./headerClient";

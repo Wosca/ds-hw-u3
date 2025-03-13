@@ -19,7 +19,6 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 
-// shadcn components
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -29,28 +28,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-
-const fadeIn = {
-  initial: { opacity: 0, y: 20 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.5 },
-};
-
-const staggerChildren = {
-  animate: {
-    transition: {
-      staggerChildren: 0.1,
-    },
-  },
-};
 
 export default function LandingPage() {
   const [isVisible, setIsVisible] = useState(false);
@@ -96,8 +74,8 @@ export default function LandingPage() {
                       className="font-semibold w-full sm:w-auto"
                       asChild
                     >
-                      <Link href="/signup">
-                        Let's Go! <ChevronRight className="ml-2 h-4 w-4" />
+                      <Link href="/reports">
+                        View Reports <ChevronRight className="ml-2 h-4 w-4" />
                       </Link>
                     </Button>
                   </motion.div>
@@ -110,7 +88,7 @@ export default function LandingPage() {
                       variant="outline"
                       className="font-semibold w-full sm:w-auto"
                     >
-                      See How It Works
+                      <Link href="/signup">Create Account</Link>
                     </Button>
                   </motion.div>
                 </div>

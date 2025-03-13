@@ -10,15 +10,15 @@ export const userDetails = pgTable("userdetails", {
 
 export const sharkDetails = pgTable("sharkdetails", {
   sharkID: integer("sharkid").notNull().primaryKey(),
-  name: text("name").notNull(),
-  species: text("species").notNull(),
-  risk: text("risk").notNull(),
+  name: text("name").notNull().unique(),
+  species: text("species").notNull().unique(),
+  risk: text("risk").$type<"Unknown" | "Low" | "Medium" | "High">().notNull(),
 });
 
 export const beachDetails = pgTable("beachdetails", {
   beachID: integer("beachid").notNull().primaryKey(),
-  beach: text("beach").notNull(),
-  area: text("area").notNull(),
+  beach: text("beach").notNull().unique(),
+  area: text("area").notNull().unique(),
 });
 
 export const catchDetails = pgTable("catchdetails", {
