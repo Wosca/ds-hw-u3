@@ -51,7 +51,6 @@ async function updateProfile(formData: FormData) {
         accessLevel: result[0].accessLevel,
       },
     });
-    // Revalidate the current path to refresh server components
 
     revalidatePath("/profile");
     return { success: true, user: result[0] };
