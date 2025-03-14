@@ -112,7 +112,9 @@ export default function ProfileForm({
         <div className="flex space-x-2">
           {isEditing ? (
             <>
-              <Button type="submit">Save Changes</Button>
+              <Button key="save" id="save-changes" type="submit">
+                Save Changes
+              </Button>
               <Button
                 type="button"
                 variant="outline"
@@ -122,7 +124,12 @@ export default function ProfileForm({
               </Button>
             </>
           ) : (
-            <Button type="button" onClick={() => setIsEditing(true)}>
+            <Button
+              key="edit"
+              id="edit"
+              type="button"
+              onClick={() => setIsEditing(true)}
+            >
               Edit Profile
             </Button>
           )}

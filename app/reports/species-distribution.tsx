@@ -1,6 +1,6 @@
 "use client";
 
-import type React from "react";
+import React from "react";
 import {
   Card,
   CardContent,
@@ -22,7 +22,7 @@ import {
 import { Fish } from "lucide-react";
 
 type SpeciesStat = {
-  species: string;
+  name: string;
   risk: string;
   catchCount: number;
 };
@@ -32,29 +32,51 @@ export function SpeciesDistribution({
 }: {
   speciesStats: SpeciesStat[];
 }) {
-  // Colors for the pie chart based on risk level
+  // Colors for the pie chart based on risk level.
+  // Added "Others" for the aggregated slice.
   const COLORS = {
     High: "#ef4444",
     Medium: "#f59e0b",
     Low: "#22c55e",
     Unknown: "#94a3b8",
+    Others: "#6b7280",
   };
 
-  // Find the maximum catch count for relative scaling
+  // Find the maximum catch count for relative scaling in the list view
   const maxCatchCount = Math.max(
     ...speciesStats.map((stat) => stat.catchCount)
   );
 
-  // Prepare data for pie chart
-  const pieData = speciesStats
-    .filter((stat) => stat.catchCount > 0) // Only include species with catches
+  // First, prepare the raw data for the pie.
+  const rawData = speciesStats
+    .filter((stat) => stat.catchCount > 0)
     .map((stat) => ({
-      name: stat.species,
+      name: stat.name,
       value: stat.catchCount,
       risk: stat.risk,
     }));
 
-  // Group data by risk level for the risk distribution tab
+  // Group data: show only slices above a given threshold (5% in this example)
+  // and combine the rest into a grouped "Others" slice.
+  const totalValue = rawData.reduce((acc, item) => acc + item.value, 0);
+  const thresholdPercent = 0.05; // adjust this threshold as desired
+
+  const bigSlices = rawData.filter(
+    (item) => item.value >= totalValue * thresholdPercent
+  );
+  const smallSlices = rawData.filter(
+    (item) => item.value < totalValue * thresholdPercent
+  );
+  let groupedData = bigSlices;
+  if (smallSlices.length > 0) {
+    const othersValue = smallSlices.reduce((acc, item) => acc + item.value, 0);
+    groupedData = [
+      ...bigSlices,
+      { name: "Others", value: othersValue, risk: "Others" },
+    ];
+  }
+
+  // Prepare data for risk distribution (unchanged)
   const riskGroups = speciesStats.reduce((groups, stat) => {
     if (!groups[stat.risk]) {
       groups[stat.risk] = { risk: stat.risk, count: 0 };
@@ -66,7 +88,7 @@ export function SpeciesDistribution({
   const riskData = Object.values(riskGroups);
   const totalCatches = riskData.reduce((sum, group) => sum + group.count, 0);
 
-  // Function to get risk badge color
+  // Function to get risk badge
   const getRiskBadge = (risk: string) => {
     switch (risk) {
       case "High":
@@ -110,12 +132,12 @@ export function SpeciesDistribution({
           <TabsContent value="species" className="space-y-4">
             {speciesStats.map((stat) => (
               <div
-                key={stat.species}
+                key={stat.name}
                 className="flex items-center justify-between"
               >
                 <div className="flex items-center gap-2">
                   <Fish className="h-4 w-4 text-muted-foreground" />
-                  <span className="font-medium">{stat.species}</span>
+                  <span className="font-medium">{stat.name}</span>
                   <span className="ml-2">{getRiskBadge(stat.risk)}</span>
                 </div>
                 <div className="flex items-center gap-4">
@@ -148,7 +170,6 @@ export function SpeciesDistribution({
                   <Progress
                     value={(group.count / totalCatches) * 100}
                     className="w-24 h-2"
-                    // Apply color based on risk level
                     style={
                       {
                         "--progress-foreground":
@@ -169,7 +190,7 @@ export function SpeciesDistribution({
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
-                    data={pieData}
+                    data={groupedData}
                     cx="50%"
                     cy="50%"
                     labelLine={false}
@@ -178,10 +199,12 @@ export function SpeciesDistribution({
                     dataKey="value"
                     nameKey="name"
                     label={({ name, percent }) =>
+                      // The label is only displayed for slices with a significant
+                      // percentage or when it's the aggregated "Others" slice.
                       `${name} ${(percent * 100).toFixed(0)}%`
                     }
                   >
-                    {pieData.map((entry, index) => (
+                    {groupedData.map((entry, index) => (
                       <Cell
                         key={`cell-${index}`}
                         fill={COLORS[entry.risk as keyof typeof COLORS]}

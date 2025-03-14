@@ -17,7 +17,7 @@ const compareHashPassword = (password: string, hashedPassword: string) => {
   return { success: false, message: "Password not matched" };
 };
 
-export const { handlers, signIn, signOut, auth } = NextAuth({
+export const { handlers, signIn, signOut, auth, unstable_update } = NextAuth({
   pages: {
     signIn: "/signin",
     newUser: "/signup",
@@ -85,12 +85,21 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       };
       return session;
     },
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger, session }) {
       if (user) {
         token.firstName = user.firstName;
         token.surname = user.surname;
         token.email = user.email;
         token.accessLevel = user.accessLevel;
+      }
+      if (trigger === "update") {
+        token = {
+          ...token,
+          firstName: session.user.firstName,
+          surname: session.user.surname,
+          email: session.user.email,
+          accessLevel: session.user.accessLevel,
+        };
       }
       return token;
     },

@@ -1,4 +1,4 @@
-import { auth } from "@/auth";
+import { auth, unstable_update } from "@/auth";
 import { redirect } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import ProfileForm from "./profile-form";
@@ -43,8 +43,16 @@ async function updateProfile(formData: FormData) {
     if (result.length === 0) {
       return { success: false, error: "User not found" };
     }
-
+    await unstable_update({
+      user: {
+        firstName: result[0].firstName,
+        surname: result[0].surname,
+        email: result[0].email,
+        accessLevel: result[0].accessLevel,
+      },
+    });
     // Revalidate the current path to refresh server components
+
     revalidatePath("/profile");
     return { success: true, user: result[0] };
   } catch (error) {

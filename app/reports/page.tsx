@@ -131,10 +131,10 @@ export default async function ReportsPage(props: {
         <h2 className="text-2xl font-bold tracking-tight">
           Detailed Statistics
         </h2>
-
+        {/* 
         <Suspense fallback={<Skeleton className="h-[300px] w-full" />}>
           <BeachStatsSection />
-        </Suspense>
+        </Suspense> */}
 
         <Suspense fallback={<Skeleton className="h-[300px] w-full" />}>
           <SpeciesSection />
@@ -228,18 +228,43 @@ async function CatchesSection({
     .innerJoin(sharkDetails, eq(catchDetails.sharkID, sharkDetails.sharkID))
     .innerJoin(beachDetails, eq(catchDetails.beachID, beachDetails.beachID));
 
+  //   const catches: {
+  //     catchID: number;
+  //     date: string;
+  //     fate: string;
+  //     sharkName: string;
+  //     species: string;
+  //     risk: "Unknown" | "Low" | "Medium" | "High";
+  //     beach: string;
+  //     area: string;
+  // }[]
+
+  let catches = [
+    {
+      catchID: 1,
+      date: "2023-01-01",
+      fate: "Unknown",
+      sharkName: "Shark 1",
+      species: "Species 1",
+      risk: "Unknown",
+      beach: "Beach 1",
+      area: "Area 1",
+    },
+  ];
+
   // Apply all filters at once if there are any
   if (conditions.length > 0) {
-    query = query.where(
-      conditions.length === 1 ? conditions[0] : and(...conditions)
-    );
+    catches = await query
+      .where(conditions.length === 1 ? conditions[0] : and(...conditions))
+      .orderBy(desc(catchDetails.date))
+      .limit(pageSize)
+      .offset(offset);
+  } else {
+    catches = await query
+      .orderBy(desc(catchDetails.date))
+      .limit(pageSize)
+      .offset(offset);
   }
-
-  // Execute query with pagination
-  const catches = await query
-    .orderBy(desc(catchDetails.date))
-    .limit(pageSize)
-    .offset(offset);
 
   // Count total for pagination
   let countQuery = db
@@ -248,14 +273,17 @@ async function CatchesSection({
     .innerJoin(sharkDetails, eq(catchDetails.sharkID, sharkDetails.sharkID))
     .innerJoin(beachDetails, eq(catchDetails.beachID, beachDetails.beachID));
 
+  let totalCount = [{ count: 0 }];
+
   // Apply the same conditions to count query
   if (conditions.length > 0) {
-    countQuery = countQuery.where(
+    totalCount = await countQuery.where(
       conditions.length === 1 ? conditions[0] : and(...conditions)
     );
+  } else {
+    totalCount = await countQuery;
   }
 
-  const totalCount = await countQuery;
   const totalPages = Math.ceil(totalCount[0].count / pageSize);
 
   return (
@@ -289,13 +317,13 @@ async function SpeciesSection() {
   // Get catches by species with counts
   const speciesStats = await db
     .select({
-      species: sharkDetails.species,
+      name: sharkDetails.name,
       risk: sharkDetails.risk,
       catchCount: count(catchDetails.catchID),
     })
     .from(sharkDetails)
     .leftJoin(catchDetails, eq(sharkDetails.sharkID, catchDetails.sharkID))
-    .groupBy(sharkDetails.species, sharkDetails.risk)
+    .groupBy(sharkDetails.name, sharkDetails.risk)
     .orderBy(desc(sql`count(${catchDetails.catchID})`));
 
   return <SpeciesDistribution speciesStats={speciesStats} />;

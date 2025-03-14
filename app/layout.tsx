@@ -29,13 +29,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased h-full`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <SessionProvider>
           <NextTopLoader />
           <Header />
-          <main className="flex-grow">{children}</main>
           <Toaster richColors />
+          <main className="flex-grow">{children}</main>
         </SessionProvider>
       </body>
     </html>

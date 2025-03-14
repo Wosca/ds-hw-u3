@@ -86,9 +86,9 @@
   p {
     @apply text-base md:text-lg;
   }
-  section {
+  /* section {
     @apply py-20;
-  }
+  } */
   .container {
     @apply px-4 mx-auto;
   }
