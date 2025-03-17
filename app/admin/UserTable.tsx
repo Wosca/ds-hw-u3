@@ -29,6 +29,7 @@ import { Trash2Icon } from "lucide-react";
 import { toast } from "sonner";
 import { Label } from "@/components/ui/label";
 import { useQuery } from "@tanstack/react-query";
+import { ZodIssue } from "zod";
 
 export type UserData = {
   email: string;
@@ -43,7 +44,7 @@ type UserTableProps = {
   refreshData: () => Promise<UserData[]>;
   updateUser: (
     formData: FormData
-  ) => Promise<{ success: boolean; error: { message: string }[] }>;
+  ) => Promise<{ success: boolean; error: ZodIssue[] | null }>;
   deleteUser: (email: string) => Promise<void>;
 };
 
@@ -209,7 +210,7 @@ export default function UserTable({
                   } else {
                     console.log(response);
                     toast.error("Failed to update user.", {
-                      description: response.error.map(
+                      description: response.error?.map(
                         (error) => error.message + ", "
                       ),
                     });

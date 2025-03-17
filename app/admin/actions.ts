@@ -26,13 +26,13 @@ export async function updateUser(formData: FormData) {
     console.log(result.error.issues);
     return { success: false, error: result.error.issues };
   }
-  return;
+  const { email, firstName, surname, accessLevel } = result.data;
   await db
     .update(userDetails)
     .set({ firstName, surname, accessLevel: Number(accessLevel) })
     .where(eq(userDetails.email, email));
 
-  return;
+  return { success: true, error: null };
 }
 
 export async function deleteUser(email: string) {
