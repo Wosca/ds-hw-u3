@@ -5,6 +5,9 @@ import "./globals.css";
 import Header from "@/components/custom/header";
 import { Toaster } from "@/components/ui/sonner";
 import { SessionProvider } from "next-auth/react";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { getQueryClient } from "@/lib/get-query-client";
+import Providers from "@/components/providers";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -31,12 +34,12 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <SessionProvider>
-          <NextTopLoader />
-          <Header />
-          <Toaster richColors />
+        <NextTopLoader />
+        <Header />
+        <Toaster richColors />
+        <Providers>
           <main className="flex-grow">{children}</main>
-        </SessionProvider>
+        </Providers>
       </body>
     </html>
   );

@@ -11,49 +11,44 @@ import {
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { signIn, signOut } from "next-auth/react";
+import { Session } from "next-auth";
 import Link from "next/link";
-interface Session {
-  session: {
-    user: {
-      firstName: string;
-      surname: string;
-      email: string;
-      accessLevel: number;
-    };
-  };
-}
 
-export function DropdownMenuComponent(sessionObject: Session) {
-  const session = sessionObject.session;
+export function DropdownMenuComponent({
+  session,
+}: {
+  session: Session | null;
+}) {
+  // Pass Session directly
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="relative h-8 w-8 rounded-full">
           <Avatar className="h-8 w-8">
-            <AvatarImage alt={session.user?.firstName || "User"} />
-            <AvatarFallback>
-              {session.user?.firstName?.[0] || "U"}
-            </AvatarFallback>
+            <AvatarImage alt={session?.user?.name || "User"} />
+            <AvatarFallback>{session?.user?.name?.[0] || "U"}</AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <div className="flex items-center justify-start gap-2 p-2">
           <div className="flex flex-col space-y-1 leading-none">
-            {session.user?.firstName && (
-              <p className="font-medium">{session.user.firstName}</p>
+            {session?.user?.name && (
+              <p className="font-medium">{session?.user?.name}</p>
             )}
-            {session.user?.email && (
+            {session?.user?.email && (
               <p className="w-[200px] truncate text-sm text-muted-foreground">
-                {session.user.email}
+                {session?.user?.email}
               </p>
             )}
           </div>
         </div>
         <DropdownMenuSeparator />
-        <DropdownMenuItem asChild>
-          <Link href="/dashboard">Dashboard</Link>
-        </DropdownMenuItem>
+        {session?.user.accessLevel === 3 && (
+          <DropdownMenuItem asChild>
+            <Link href="/admin">Admin Dashboard</Link>
+          </DropdownMenuItem>
+        )}
         <DropdownMenuItem asChild>
           <Link href="/profile">Profile</Link>
         </DropdownMenuItem>
@@ -83,8 +78,10 @@ export const HeaderSignOut = () => {
   );
 };
 
-export function Links() {
+export function Links({ session }: { session: Session | null }) {
+  // Access session directly
   const pathname = usePathname();
+
   return (
     pathname === "/" && (
       <>
@@ -94,6 +91,14 @@ export function Links() {
         >
           Reports
         </Link>
+        {session?.user?.accessLevel === 3 && (
+          <Link
+            href="/admin"
+            className="text-muted-foreground hover:text-foreground transition-colors"
+          >
+            Admin
+          </Link>
+        )}
       </>
     )
   );

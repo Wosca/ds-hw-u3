@@ -2,11 +2,9 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Bell, ChevronRight } from "lucide-react";
+import { Bell, ChevronRight, Shield } from "lucide-react";
 import Link from "next/link";
-
 import { Button } from "@/components/ui/button";
-
 import { Badge } from "@/components/ui/badge";
 import { useSession } from "next-auth/react";
 
@@ -24,9 +22,9 @@ export default function LandingPage() {
         {/* Hero Section */}
         <section className="relative overflow-hidden bg-gradient-to-b from-blue-50 to-blue-100 py-20">
           <div className="container mx-auto px-4">
-            <div className="flex justify-center gap-12 items-center">
+            <div className="flex flex-col md:flex-row justify-between items-center gap-8">
               <motion.div
-                className="text-center max-w-xl"
+                className="text-center md:text-left max-w-xl"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : 20 }}
                 transition={{ duration: 0.5 }}
@@ -37,45 +35,45 @@ export default function LandingPage() {
                 >
                   Hey there, water lover! 🌊
                 </Badge>
-                <h1 className="text-5xl md:text-6xl font-bold leading-tight mb-6">
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6">
                   Swim Safely with{" "}
                   <span className="text-primary">SharkGuard</span>
                 </h1>
-                <p className="text-xl mb-8 text-muted-foreground">
+                <p className="text-lg md:text-xl mb-8 text-muted-foreground">
                   Get real-time shark alerts right on your phone. No more
-                  worrying about what`&apos;`s swimming beneath you!
+                  worrying about what's swimming beneath you!
                 </p>
-                <div className="flex flex-col justify-center sm:flex-row gap-4">
-                  <motion.div
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
+                <div className="flex flex-col sm:flex-row justify-center md:justify-start gap-4">
+                  <Button
+                    size="lg"
+                    className="font-semibold w-full sm:w-auto"
+                    asChild
                   >
-                    <Button
-                      size="lg"
-                      className="font-semibold w-full sm:w-auto"
-                      asChild
-                    >
-                      <Link href="/reports">
-                        View Reports <ChevronRight className="ml-2 h-4 w-4" />
-                      </Link>
-                    </Button>
-                  </motion.div>
-                  <motion.div
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
+                    <Link href="/reports">
+                      View Reports <ChevronRight className="ml-2 h-4 w-4" />
+                    </Link>
+                  </Button>
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="font-semibold w-full sm:w-auto"
+                    asChild
                   >
-                    <Button
-                      size="lg"
-                      variant="outline"
-                      className="font-semibold w-full sm:w-auto"
-                    >
-                      {!session?.user ? (
-                        <Link href="/signup">Create Account</Link>
-                      ) : (
-                        <Link href="/profile">View your profile</Link>
-                      )}
-                    </Button>
-                  </motion.div>
+                    <Link href={!session?.user ? "/signup" : "/profile"}>
+                      {!session?.user ? "Create Account" : "View your profile"}
+                    </Link>
+                  </Button>
+                </div>
+              </motion.div>
+
+              <motion.div
+                className="hidden md:block"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : 20 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+              >
+                <div className="bg-white/50 backdrop-blur-sm p-6 rounded-2xl shadow-lg">
+                  <Shield className="h-32 w-32 text-primary mx-auto" />
                 </div>
               </motion.div>
             </div>
@@ -83,14 +81,14 @@ export default function LandingPage() {
         </section>
 
         {/* Trusted By Section */}
-        <section className="py-12 bg-background border-y">
+        <section className="py-8 md:py-12 bg-background border-y">
           <div className="container mx-auto px-4">
-            <div className="text-center mb-8">
-              <p className="text-muted-foreground">
+            <div className="text-center mb-6">
+              <p className="text-muted-foreground font-medium">
                 Trusted by beach bums and surf pros alike
               </p>
             </div>
-            <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12">
+            <div className="flex flex-wrap justify-center items-center gap-6 md:gap-12">
               {[
                 "Surf City Lifeguards",
                 "Beach Patrol Squad",
@@ -110,16 +108,42 @@ export default function LandingPage() {
         </section>
 
         {/* App Demo Section */}
-        <section className="py-24 sm:py-32 bg-gradient-to-b from-blue-50 to-background">
+        <section className="py-16 md:py-24 bg-gradient-to-b from-blue-50 to-background">
           <div className="container mx-auto px-4">
-            <div className="w-full gap-12 items-center">
+            <div className="flex flex-col md:flex-row justify-between items-center gap-12">
+              <div className="md:w-1/2 order-2 md:order-1">
+                <h2 className="text-3xl md:text-4xl font-bold mb-6">
+                  Real-time Alerts When It Matters Most
+                </h2>
+                <p className="text-lg text-muted-foreground mb-8">
+                  Our advanced detection system monitors coastal waters and
+                  sends instant notifications when sharks are spotted near your
+                  location.
+                </p>
+                <ul className="space-y-4 mb-8">
+                  {[
+                    "Precise location tracking",
+                    "Risk level assessment",
+                    "Safety recommendations",
+                  ].map((feature) => (
+                    <li key={feature} className="flex items-center gap-2">
+                      <div className="h-2 w-2 rounded-full bg-primary"></div>
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+                <Button asChild>
+                  <Link href="/features">Learn more about features</Link>
+                </Button>
+              </div>
+
               <motion.div
+                className="md:w-1/2 order-1 md:order-2"
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: isVisible ? 1 : 0, x: isVisible ? 0 : 20 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
-                className="order-1 lg:order-2"
               >
-                <div className="bg-gradient-to-br from-blue-500 to-blue-700 rounded-3xl p-8 text-white shadow-xl">
+                <div className="bg-gradient-to-br from-blue-500 to-blue-700 rounded-3xl p-8 text-white shadow-xl max-w-md mx-auto">
                   <div className="text-center mb-6">
                     <Bell className="h-16 w-16 mx-auto mb-4" />
                     <h3 className="text-2xl font-bold">SHARK ALERT!</h3>

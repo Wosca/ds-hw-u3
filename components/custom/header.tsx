@@ -3,6 +3,7 @@ import Link from "next/link";
 
 import { auth } from "@/auth";
 import { DropdownMenuComponent, HeaderSignOut, Links } from "./headerClient";
+import { Session } from "next-auth";
 
 export default async function Header() {
   const session = await auth();
@@ -15,7 +16,7 @@ export default async function Header() {
         </Link>
 
         <nav className="hidden md:flex space-x-6">
-          <Links />
+          <Links session={session} />
         </nav>
 
         <div className="flex items-center space-x-4">
