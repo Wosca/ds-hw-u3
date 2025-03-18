@@ -13,7 +13,7 @@ const compat = new FlatCompat({
 });
 
 export default defineConfig([
-  globalIgnores(["components/ui/*", ".next", "node_modules"]),
+  globalIgnores(["components/ui/*", ".next", "node_modules", "hooks/*"]),
   {
     extends: compat.extends(
       "next/core-web-vitals",
