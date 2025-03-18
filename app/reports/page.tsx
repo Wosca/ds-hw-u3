@@ -8,6 +8,7 @@ import { SpeciesDistribution } from "./species-distribution";
 import { CatchFilters } from "./catches-filters";
 import { PaginationControl } from "./pagination-control";
 import { Skeleton } from "@/components/ui/skeleton";
+import { ScrollToSection } from "./scroll-to-section";
 import {
   Card,
   CardContent,
@@ -80,6 +81,9 @@ export default async function ReportsPage(props: {
 
   return (
     <div className="container mx-auto py-8 space-y-8">
+      {/* Add the ScrollToSection component */}
+      <ScrollToSection sectionId="filtersSection" />
+      
       <div className="flex flex-col gap-2">
         <h1 className="text-3xl font-bold tracking-tight">
           Shark Catch Reports
@@ -94,7 +98,8 @@ export default async function ReportsPage(props: {
         <StatsSection />
       </Suspense>
 
-      <Card>
+      {/* Add id to the filters section */}
+      <Card id="filtersSection">
         <CardHeader>
           <CardTitle>Filter Reports</CardTitle>
           <CardDescription>
