@@ -1,6 +1,6 @@
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-import { signInSchema } from "./lib/zod";
+import { signInSchema, signUpSchema } from "./lib/zod";
 import { db } from "./lib/db";
 import { userDetails } from "./lib/schema";
 import { eq } from "drizzle-orm";
@@ -42,12 +42,14 @@ export const { handlers, signIn, signOut, auth, unstable_update } = NextAuth({
           .limit(1);
 
         if (dbUser.length === 0) {
+          const { email, password, firstName, surname } =
+            await signUpSchema.parseAsync(credentials);
           const user = await db
             .insert(userDetails)
             .values({
-              email: email,
-              firstName: credentials.firstName,
-              surname: credentials.surname,
+              email,
+              firstName,
+              surname,
               password: hashPassword(password),
             })
             .returning();

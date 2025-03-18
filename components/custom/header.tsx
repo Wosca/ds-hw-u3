@@ -3,7 +3,6 @@ import Link from "next/link";
 
 import { auth } from "@/auth";
 import { DropdownMenuComponent, HeaderSignOut, Links } from "./headerClient";
-import { Session } from "next-auth";
 
 export default async function Header() {
   const session = await auth();
