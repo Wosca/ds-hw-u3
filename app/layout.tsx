@@ -4,9 +4,6 @@ import NextTopLoader from "nextjs-toploader";
 import "./globals.css";
 import Header from "@/components/custom/header";
 import { Toaster } from "@/components/ui/sonner";
-import { SessionProvider } from "next-auth/react";
-import { QueryClientProvider } from "@tanstack/react-query";
-import { getQueryClient } from "@/lib/get-query-client";
 import Providers from "@/components/providers";
 
 const geistSans = localFont({

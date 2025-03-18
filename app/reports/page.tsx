@@ -213,7 +213,7 @@ async function CatchesSection({
   }
 
   // Build query with filters
-  let query = db
+  const query = db
     .select({
       catchID: catchDetails.catchID,
       date: catchDetails.date,
@@ -267,7 +267,7 @@ async function CatchesSection({
   }
 
   // Count total for pagination
-  let countQuery = db
+  const countQuery = db
     .select({ count: count() })
     .from(catchDetails)
     .innerJoin(sharkDetails, eq(catchDetails.sharkID, sharkDetails.sharkID))
