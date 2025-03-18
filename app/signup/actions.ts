@@ -22,8 +22,8 @@ export async function SignUp1({
       redirect: false,
     });
     return true;
-  } catch (error: any) {
-    console.error(error.cause);
+  } catch (error: unknown) {
+    console.error(error?.toString());
     return error;
   }
 }

@@ -16,8 +16,7 @@ export function StatsCards({
   totalBeaches,
   totalSpecies,
   latestCatch,
-  highRiskCount,
-}: StatsCardsProps) {
+  }: StatsCardsProps) {
   // Format date for display
   const formatDate = (dateString: string) => {
     try {
@@ -28,6 +27,7 @@ export function StatsCards({
         day: "numeric",
       });
     } catch (e) {
+      console.error(e);
       return dateString; // Fallback to original string if parsing fails
     }
   };

@@ -41,7 +41,7 @@ export default function LandingPage() {
                 </h1>
                 <p className="text-lg md:text-xl mb-8 text-muted-foreground">
                   Get real-time shark alerts right on your phone. No more
-                  worrying about what's swimming beneath you!
+                  worrying about what&apos;s swimming beneath you!
                 </p>
                 <div className="flex flex-col sm:flex-row justify-center md:justify-start gap-4">
                   <Button

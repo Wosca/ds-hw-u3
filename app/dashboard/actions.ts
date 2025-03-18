@@ -62,8 +62,18 @@ export const processSharkData = async (file: string) => {
     autoParse: true,
   });
 
-  const formattedRecords = records.map((record: { [x: string]: any }) => {
-    const speciesName = record["Species name"] as string;
+  interface SharkRecord {
+    _id: string | number;
+    "Species name": string;
+    "Common Name": string;
+    gearBeach: string;
+    areaName: string;
+    date: string;
+    Fate: string;
+  }
+  
+  const formattedRecords = records.map((record: SharkRecord) => {
+    const speciesName = record["Species name"];
     const riskInfo = sharkRisks[speciesName as keyof typeof sharkRisks] || {
       risk: "Unknown",
     };
@@ -80,8 +90,7 @@ export const processSharkData = async (file: string) => {
     };
   });
 
-  try {
-    const sharkSchema = z.object({
+  const sharkSchema = z.object({
       id: z.number(),
       name: z.string(),
       species: z.string(),
@@ -91,7 +100,11 @@ export const processSharkData = async (file: string) => {
       date: z.string(),
       fate: z.string(),
     });
-    formattedRecords.forEach((record: { [x: string]: any }) => {
+    
+
+  try {
+    
+    formattedRecords.forEach((record: Record<string, unknown>) => {
       sharkSchema.parse(record);
     });
   } catch (err) {
@@ -99,7 +112,7 @@ export const processSharkData = async (file: string) => {
     return { error: true, errorFrom: "zod" };
   }
 
-  const sharkRecords = formattedRecords.map((record: { [x: string]: any }) => {
+  const sharkRecords = formattedRecords.map((record: { [x: string]: SharkRecord }) => {
     return {
       sharkID: record.id,
       name: record.name,
@@ -123,7 +136,7 @@ export const processSharkData = async (file: string) => {
     return { error: true, errorFrom: "db" };
   }
 
-  const beachRecords = formattedRecords.map((record: { [x: string]: any }) => {
+  const beachRecords = formattedRecords.map((record: { beach: string; area: string }) => {
     return {
       beach: record.beach,
       area: record.area,
@@ -147,15 +160,16 @@ export const processSharkData = async (file: string) => {
   // Query the database to get sharkIDs and beachIDs
   const sharksMap = new Map();
   const beachesMap = new Map();
-  function removeDuplicates(arr: any[]) {
+
+    function removeDuplicates<T>(arr: T[]): T[] {
     return [...new Set(arr)];
   }
 
   const sharkNames = removeDuplicates(
-    formattedRecords.map((r: { name: any }) => r.name)
+    formattedRecords.map((r: { name: string }) => r.name)
   );
   const sharkSpecies = removeDuplicates(
-    formattedRecords.map((r: { species: any }) => r.species)
+    formattedRecords.map((r: { species: string }) => r.species)
   );
 
   // Get all sharks from DB with their IDs
@@ -184,7 +198,7 @@ export const processSharkData = async (file: string) => {
     beachesMap.set(`${beach.beach}_${beach.area}`, beach.beachID);
   });
 
-  const catchRecords = formattedRecords.map((record: { [x: string]: any }) => {
+  const catchRecords = formattedRecords.map((record: { [x: string]: SharkRecord }) => {
     // Use the maps to get the correct database IDs
     const sharkKey = `${record.name}_${record.species}`;
     const beachKey = `${record.beach}_${record.area}`;

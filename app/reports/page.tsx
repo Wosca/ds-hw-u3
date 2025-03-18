@@ -4,10 +4,8 @@ import { desc, eq, sql, count, gte, lte, and } from "drizzle-orm";
 import { catchDetails, sharkDetails, beachDetails } from "@/lib/schema";
 import { CatchesTable } from "./catches-table";
 import { StatsCards } from "./stats-card";
-import { BeachStats } from "./beach-stats";
 import { SpeciesDistribution } from "./species-distribution";
 import { CatchFilters } from "./catches-filters";
-// Update the import for the pagination component
 import { PaginationControl } from "./pagination-control";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
@@ -292,24 +290,6 @@ async function CatchesSection({
       <PaginationControl currentPage={currentPage} totalPages={totalPages} />
     </div>
   );
-}
-
-// Server component for beach statistics
-async function BeachStatsSection() {
-  // Get catches by beach with counts
-  const beachStats = await db
-    .select({
-      beachID: beachDetails.beachID,
-      beach: beachDetails.beach,
-      area: beachDetails.area,
-      catchCount: count(catchDetails.catchID),
-    })
-    .from(beachDetails)
-    .leftJoin(catchDetails, eq(beachDetails.beachID, catchDetails.beachID))
-    .groupBy(beachDetails.beachID, beachDetails.beach, beachDetails.area)
-    .orderBy(desc(sql`count(${catchDetails.catchID})`));
-
-  return <BeachStats beachStats={beachStats} />;
 }
 
 // Server component for species distribution

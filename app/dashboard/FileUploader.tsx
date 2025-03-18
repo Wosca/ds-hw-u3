@@ -25,12 +25,20 @@ import { Progress } from "@/components/ui/progress";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
 
+interface UploadResult {
+  addedSharks?: number;
+  addedBeaches?: number;
+  addedCatches?: number;
+  error: boolean;
+  errorFrom?: string;
+}
+
 export default function FileUploader() {
   const [file, setFile] = useState<File | null>(null);
   const [isUploading, setIsUploading] = useState(false);
-  const [uploadResult, setUploadResult] = useState<any>(null);
+  const [uploadResult, setUploadResult] = useState<UploadResult | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [previewData, setPreviewData] = useState<any[]>([]);
+  const [previewData, setPreviewData] = useState<Record<string, string>[]>([]);
   const [headers, setHeaders] = useState<string[]>([]);
   const [showPreview, setShowPreview] = useState(false);
 
@@ -64,6 +72,7 @@ export default function FileUploader() {
         }
       } catch (err) {
         setError("Error parsing CSV file for preview");
+        console.error(err)
       }
     }
   };
