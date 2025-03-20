@@ -7,14 +7,14 @@ import {
   CardDescription,
   CardFooter,
 } from "@/components/ui/card";
-import { getBeaches, updateNotificationSettings } from "./actions";
+import { getBeaches, Response, updateNotificationSettings } from "./actions";
 import ClientContent from "./ClientContent";
 
 export default async function SettingsPage() {
   const beaches = await getBeaches();
-  async function handleUpdates(formData: FormData) {
+  async function handleUpdates(formData: FormData): Promise<Response> {
     "use server";
-    await updateNotificationSettings(formData);
+    return updateNotificationSettings(formData);
   }
   return (
     <div className="container mx-auto p-4">

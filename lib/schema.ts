@@ -37,9 +37,10 @@ export const warning = pgTable("warning", {
   email: text("email")
     .notNull()
     .references(() => userDetails.email)
-    .primaryKey(),
+    .unique(),
   beachID: integer("beachid")
     .notNull()
     .references(() => beachDetails.beachID)
-    .primaryKey(),
+    .primaryKey()
+    .unique(),
 });
